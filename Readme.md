@@ -13,7 +13,7 @@ jupyter:
 
 
 ## Ноутбук по астрономии. Введение {#ноутбук-по-астрономии-введение}
-:::
+
 
 
 Добро пожаловать, исследователь! Здесь ты найдешь примеры, которые мы
@@ -27,9 +27,7 @@ jupyter:
 папку `astronomy python` и помести ее в корень твоего гугл диска, затем
 запускай ноутбук. Помни, что каждая ячейка - отдельная задача, за
 исключением пункта о деконволюции.
-:::
 
-::: {.cell .code id="P2kHf_bRhl5U"}
 ``` python
 #для начала работы установи эти пакеты
 pip install astropy
@@ -43,9 +41,6 @@ pip install git+https://github.com/CheerfulUser/TESSreduce.git
 pip install astroquery
 pip install Galsim
 ```
-:::
-
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\"}" id="2Q7y05YUiA5Q" outputId="95883443-e954-49ec-b883-07ea24913e2a"}
 ``` python
 #установки ноутбук с файлами для работы и создай на верхнем уровне папку "astronomy python"!
 from google.colab import drive
@@ -54,12 +49,6 @@ drive.mount('/content/drive')
 #/content/drive/MyDrive/astronomy python/ - это будет основной путь к файлам на твоем диске
 ```
 
-::: {.output .stream .stdout}
-    Mounted at /content/drive
-:::
-:::
-
-::: {.cell .markdown id="aAEdXLml2tbq"}
 #### **Полезные ноутбуки и ссылки**
 
 Классификация переменных звезд -
@@ -123,17 +112,11 @@ RNN для переменных звезд -
 
 Сложение кадров в стэк -
 [здесь](https://edinstvo.org/page/stacking-deepskystacker)
-:::
 
-::: {.cell .markdown id="8KDj6gGD5xCm"}
 # **Раздел 1. Звезды** {#раздел-1-звезды}
-:::
 
-::: {.cell .markdown id="uQZq89qZfXkV"}
 ## 1. Найдем звезды на изображении при помощи чистой математики! {#1-найдем-звезды-на-изображении-при-помощи-чистой-математики}
-:::
 
-::: {.cell .markdown id="vkbmkHLpOiyu"}
 В этом ноутбуке перед нами простая задача - не используя сторонние
 библиотеки, связанные с распознаванием чего-либо и компьютерным зрением,
 при помощи обыкновенный математики мы должны найти звезды на картинке в
@@ -141,9 +124,6 @@ RNN для переменных звезд -
 
 Здесь нам поможет оценка FWHM - средней полуширины на отдельных участках
 поля
-:::
-
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":492}" id="0O7obPgquWhI" outputId="e22d735f-3ce3-480b-a331-c244582945ad"}
 ``` python
 from astropy.io import fits
 import numpy as np
@@ -191,31 +171,16 @@ for peak, fwhm in zip(peaks, fwhms):
 plt.imshow(section1, cmap='Greys', norm=LogNorm(), origin = 'lower', interpolation='nearest')
 ```
 
-::: {.output .execute_result execution_count="44"}
-    <matplotlib.image.AxesImage at 0x7d1e9e6f7e20>
-:::
 
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/abee7986cc1dbe9962367d758713beb83e8341ed.png)
-:::
-:::
 
-::: {.cell .markdown id="X91bL3WCwQTj"}
-:::
-
-::: {.cell .markdown id="JUehiqsawNU0"}
 ## 2. Сделаем то же самое, но с более классной библиотекой! {#2-сделаем-то-же-самое-но-с-более-классной-библиотекой}
-:::
 
-::: {.cell .markdown id="1P8bP3K7PMJp"}
 На лекции я представил вам модуль astropy - половина математических
 действий в астрономии осуществляется через него. Давайте воспользуемся
 стандартными инструментами матстата, оценим среднее, медианное и
 среднеквадратичное отклонение, оценим так же FWHM и найдем звезды на
 изображении
-:::
-
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":391}" id="2Ai73OjjQ-Y4" outputId="b745cd3d-0983-4349-b7a6-650249baa4a2"}
 ``` python
 from astropy.io import fits
 fits_file = fits.open('/content/drive/MyDrive/astronomy python/ngc1261.fits')
@@ -252,24 +217,16 @@ plt.imshow(section1, cmap='Greys', norm=LogNorm(), origin = 'lower', interpolati
 apertures.plot(color='blue',lw=1.5, alpha = 0.5);
 ```
 
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/be7eb32190e740dbb6de678a50d7ec0ad55ce0e9.png)
-:::
-:::
 
-::: {.cell .markdown id="vJ1PByUEy7Ji"}
 ## 3. Построим тензорное представление! {#3-построим-тензорное-представление}
-:::
 
-::: {.cell .markdown id="6efY-f1TPga4"}
 Работая с FWHM, мы поняли, что любое изображение можно разложить на три
 цветовых канала и для каждый монохромный канал представить в виде
 тензора, где по оси z будет яркость, а на плоскости xy координаты.
 Анализируя распределение яркостей на поле изображения, мы можем
 построить его гистограммное представление
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":1000}" id="nuKwImdxy4hX" outputId="10dbc4e6-5ef5-46cf-efbd-b58dc1585dfa"}
 ``` python
 from astropy.io import fits
 import numpy as np
@@ -335,32 +292,20 @@ ax.set_title('3D распределение яркости')
 plt.show()
 ```
 
-::: {.output .stream .stdout}
     Оценка FWHM: 6.333333333333333
-:::
 
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/f9f15339fd12c891f56e6bcb680844bcdc43feaf.png)
-:::
 
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/2655a5406f28e8ba7d24d5d6d0c06f0997b45117.png)
-:::
-:::
 
-::: {.cell .markdown id="0BLqZowi6KMe"}
 ## 4. Построим график FWHM и распределение Гаусса! {#4-построим-график-fwhm-и-распределение-гаусса}
-:::
 
-::: {.cell .markdown id="0hayGGCVPy1j"}
 Давайте построим сечением в профиль наше тензорное представление и
 получим тот самый график FWHM - это величина дискретная, следовательно,
 ее лучше всего описывает распределение Пуассона, но в рамках задачи с
 определенными допусками мы можем его аппроксимировать и представить в
 виде хрестоматийного нормального (Гауссова) распределения.
-:::
 
-::: {.cell .markdown id="eTuW5NM2brmy"}
 **Теорема Котельникова**, также известная как теорема о выборке или
 теорема о дискретизации, является фундаментальным результатом в области
 сигнальной обработки и связанной с темой преобразования Фурье.
@@ -377,9 +322,7 @@ plt.show()
 
 Итого: оптимальная частота дискретизации от х2 до х3 частоты исходного
 аналогового сигнала.
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":582}" id="J6jtWavv4NiP" outputId="3404238b-b929-4899-c472-5edddb4840bb"}
 ``` python
 from astropy.io import fits
 import numpy as np
@@ -443,27 +386,17 @@ plt.grid(True)
 plt.show()
 ```
 
-::: {.output .stream .stdout}
     Оценка FWHM для самой яркой звезды: 9
-:::
 
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/260df3449f4767819b6ccba73ff050e604279b30.png)
-:::
-:::
 
-::: {.cell .markdown id="VesHhc_aQJFc"}
 Обратите внимание, что мы работаем с файлами формата FITS - научный
 формат данных, где в header файла содержится значительное количество
 полезной информации о снимке. Очень важно соблюдать битность каждого
 файла и не путаться в разрешениях!
-:::
 
-::: {.cell .markdown id="jjex8xVDZO6q"}
 ## Сделаем анализ SNR звезд!
-:::
 
-::: {.cell .markdown id="86vifX30TRzX"}
 Здесь мы снова применим уже знакомые нам инструменты для вычисления
 главного показателя \"качества\" изображения, характеризующего
 фотометрические параметры изображения, - SNR (соотношение сигнала к
@@ -472,9 +405,7 @@ plt.show()
 дифракционным пределом, оценки seeing (спокойность и прозрачность
 атмосферы в заданной точке), оценки сферических аббераций и иных
 оптических искажений телескопа)
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":660}" id="BZoa6ceWZOVY" outputId="866f55cf-d5b5-4f65-9a65-2dc2a5616f33"}
 ``` python
 from astropy.io import fits
 from astropy.stats import sigma_clipped_stats
@@ -537,33 +468,23 @@ plt.ylabel('Пиксели по Y')
 plt.show()
 ```
 
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/2ebe642fe8b227d02e671d3ab0b5b253a63e635c.png)
-:::
-:::
 
-::: {.cell .markdown id="iHHAeLe449m2"}
 ## 5. Теперь сделаем апертурную фотометрию! {#5-теперь-сделаем-апертурную-фотометрию}
-:::
 
-::: {.cell .markdown id="LtteKMnL1fgL"}
 Апертурная фотометрия - это метод измерения яркости астрономических
 объектов путем суммирования света, попадающего в определенную апертуру
 (область наблюдения) вокруг объекта на изображении.
 
 ------------------------------------------------------------------------
-:::
 
-::: {.cell .markdown id="AjyPESYW6lDl"}
 Здесь мы определим звезды на снимке, обозначим их, и введем специальные
 апертурные круги для определения фона вокруг каждой звезды.
 
 Добавим параметры суммы апертуры - сумма данных об объекте в апертуре
 масштабированная по количеству фотонов на единицу данных и коэффициентам
 экспозиции и фон
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":391}" id="1SlK6hRH4j-7" outputId="7a8eb05f-8b97-4e50-958f-b53ec09afe3f"}
 ``` python
 from photutils.aperture import CircularAnnulus, CircularAperture, ApertureStats, aperture_photometry
 
@@ -578,12 +499,9 @@ annulus_aperture.plot(color='green',lw=1.5,alpha=0.5);
 plt.show()
 ```
 
-::: {.output .display_data}
-![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/fe04490e61454f85daccb60dee802c003d0d3e05.png)
-:::
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\"}" id="PZU7vbub6pHO" outputId="dc23eb82-c61a-48b2-eeb0-da78eb0acb17"}
+![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/fe04490e61454f85daccb60dee802c003d0d3e05.png)
+
 ``` python
 aperstats = ApertureStats(section1, annulus_aperture)
 bkg_mean = aperstats.mean
@@ -628,19 +546,12 @@ star_data.pprint()
     244  358.92713  394.68748    3237.3102  3.1788404
     245  76.639443  396.32673    1038.9573  65.419385
     Length = 245 rows
-:::
-:::
 
-::: {.cell .markdown id="kEniz0nF1nKN"}
 В таблице содержатся данные о координатах звезд, о размере апертурного
 диска и значения интенсивности вычисленного фона в специальных кругах
-:::
 
-::: {.cell .markdown id="cPtBVLz2Z7-y"}
 ## 6. Посчитаем поверхностную яркость галактики {#6-посчитаем-поверхностную-яркость-галактики}
-:::
 
-::: {.cell .markdown id="I0uXfkHNaS-1"}
 В этой задаче мы построим пару графиков (в полуупрощенном виде),
 используя апертурную фотометрию эллиптической галактики M89.
 
@@ -667,9 +578,7 @@ python извлечь поток в этом круге. Все остается
 Нас интересует поверхностная яркость объекта - то есть ее распределение
 на некую площадь, в данном случае распределение светимости по площади
 источника света.
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":546}" id="r7ebVvOsaDo6" outputId="6e22b28d-7274-44d3-e82c-097c42aa7cfd"}
 ``` python
 from astropy.io import fits
 import matplotlib.pyplot as plt
@@ -693,18 +602,9 @@ plt.colorbar()
       from photutils import (SkyCircularAperture, aperture_photometry)
     <ipython-input-10-98100a861de7>:6: DeprecationWarning: `photutils.aperture_photometry` is a deprecated alias for `photutils.aperture.aperture_photometry` and will be removed in the future. Instead, please use `from photutils.aperture import aperture_photometry` to silence this warning.
       from photutils import (SkyCircularAperture, aperture_photometry)
-:::
 
-::: {.output .execute_result execution_count="10"}
-    <matplotlib.colorbar.Colorbar at 0x786d5ba9fe20>
-:::
-
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/cea071d97f646dbf5d67e9abe99a2241529824b1.png)
-:::
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":612}" id="XInapIY2boa_" outputId="f031581f-8662-4785-cb4e-6fcc9ff9cc68"}
 ``` python
 e_ra = 188.9159
 e_dec = 12.5563
@@ -732,28 +632,20 @@ ax.imshow(e_data, cmap='gray_r', norm=colors.LogNorm(), origin='lower')
 print(flux)
 ```
 
-::: {.output .stream .stderr}
     WARNING: FITSFixedWarning: 'datfix' made the change 'Set MJD-OBS to 35543.000000 from DATE-OBS.
     Changed DATE-OBS from '11/03/56          ' to '1956-03-11''. [astropy.wcs.wcs]
     WARNING:astropy:FITSFixedWarning: 'datfix' made the change 'Set MJD-OBS to 35543.000000 from DATE-OBS.
     Changed DATE-OBS from '11/03/56          ' to '1956-03-11''.
-:::
 
-::: {.output .stream .stdout}
        aperture_sum   
     ------------------
     1552458.4798971443
     [1.55245848e+06 3.48694370e+06 6.15424913e+06 1.32454454e+07
      2.16134134e+07 3.01097674e+07 3.83033805e+07 4.63695370e+07
      5.45792846e+07 6.31008575e+07 7.20690870e+07 1.24809422e+08]
-:::
 
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/aa8a27fc466f490d56a4d485e0c248d091ec736f.png)
-:::
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":449}" id="i5Ls15sWbiKg" outputId="ed8c16e4-408d-4503-b1d3-c727c322f0eb"}
 ``` python
 area = [np.pi * x**2 for x in radius]
 plt.scatter(radius, flux/area)
@@ -762,16 +654,11 @@ plt.ylabel('Поверхностная яркость (произвольные 
 plt.show()
 ```
 
-::: {.output .display_data}
+
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/eca75cb4eb8cad765e80dcb79a7cdb34de9b10d5.png)
-:::
-:::
 
-::: {.cell .markdown id="t_cs399p7IMf"}
 # **Раздел 2. Деконволюция** {#раздел-2-деконволюция}
-:::
 
-::: {.cell .markdown id="0HwyzckeUKef"}
 Деконволюция или же обратная свертка - это процесс восстановления
 оригинального сигнала или распределения из искаженного или размытого
 сигнала. В контексте обработки сигналов, изображений или данных,
@@ -784,13 +671,9 @@ plt.show()
 помощью функции свертки, что может вызвать размытие или искажение.
 Деконволюция возвращает исходный сигнал, стараясь уменьшить или отменить
 эти эффекты.
-:::
 
-::: {.cell .markdown id="aMRSCYgCG-Mr"}
 ## Экстремальная деконцолюция
-:::
 
-::: {.cell .markdown id="4xsaZG2Kz-GN"}
 Экстремальная деконволюция (Extreme Deconvolution - XD) - это метод
 статистического анализа, используемый для оценки плотности вероятности
 данных, а также для выделения и моделирования кластеров в многомерных
@@ -812,13 +695,9 @@ plt.show()
 3.  Предсказание: на основе полученной модели можно предсказать
     распределение для новых данных или сгенерировать новые образцы из
     распределения.
-:::
 
-::: {.cell .markdown id="SEHVF8-DzY-H"}
 установите набор данных для работы LaTex
-:::
 
-::: {.cell .code id="1QNlPp91NhuX"}
 ``` python
 ! sudo apt-get install texlive-latex-recommended
 ! sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended
@@ -829,15 +708,11 @@ plt.show()
 ! sudo cp /tmp/type1cm/type1cm/type1cm.sty /usr/share/texmf/tex/latex/type1cm
 ! sudo texhash
 ```
-:::
 
-::: {.cell .code id="m3RWl9plOEFh"}
 ``` python
 !sudo apt-get install texlive-latex-extra texlive-fonts-recommended dvipng cm-super
 ```
-:::
 
-::: {.cell .code colab="{\"base_uri\":\"https://localhost:8080/\",\"height\":404}" id="h3IP3Ylw7U_z" outputId="8e916e56-a345-4b01-9c3d-4d7430e461d0"}
 ``` python
 import numpy as np
 from matplotlib import pyplot as plt
@@ -946,20 +821,12 @@ for i in range(4):
 plt.show()
 ```
 
-::: {.output .stream .stdout}
     @pickle_results: using precomputed results from 'XD_toy.pkl'
-:::
 
-::: {.output .display_data}
 ![](vertopal_874ce37763e14fb5a26f4fb29ba37c7a/a35dcc37afe37d942f4fac86e70040f3b0d8a207.png)
-:::
-:::
 
-::: {.cell .markdown id="YNRukRHaPiIp"}
 ## Выполним свертку с функцией PSF
-:::
 
-::: {.cell .markdown id="OtsG3dyi0uMt"}
 В этом ноутбуке мы возьмем с сайта проекта astroml распределение некой
 величины, смоделируем PSF (функцию рассеяния точки), применим к нему эту
 функцию, получим свертку и попробуем сделать обратную свертку.
