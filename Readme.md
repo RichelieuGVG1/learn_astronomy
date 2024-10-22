@@ -1,18 +1,4 @@
 ## УЧЕБНИК ПО ПРОГРАММИРОВАНИЮ В АСТРОНОМИИ
----
-jupyter:
-  colab:
-    toc_visible: true
-  kernelspec:
-    display_name: Python 3
-    name: python3
-  language_info:
-    name: python
-  nbformat: 4
-  nbformat_minor: 0
----
-
-
 
 Добро пожаловать, исследователь! Здесь ты найдешь примеры, которые мы
 разбирали на лекции и сможешь самостоятельно потыкать код!
